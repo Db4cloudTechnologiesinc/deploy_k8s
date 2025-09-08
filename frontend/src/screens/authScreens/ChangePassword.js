@@ -22,7 +22,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { FaEye, FaEyeSlash, FaLock, FaArrowLeft, FaCheck, FaTimes } from 'react-icons/fa';
-import { Velustro } from "uvcanvas";
+
 
 // Create theme with custom breakpoints
 const theme = createTheme({
@@ -40,7 +40,7 @@ const theme = createTheme({
   },
 });
 
-// Enhanced styled components with perfect centering and extended background
+// Enhanced styled components with perfect centering and white background
 const ChangePasswordWrapper = styled('div')(({ theme }) => ({
   minHeight: '100vh',
   width: '100vw',
@@ -54,6 +54,7 @@ const ChangePasswordWrapper = styled('div')(({ theme }) => ({
   bottom: 0,
   overflow: 'auto',
   padding: '20px',
+  backgroundColor: '#ffffff',
   [theme.breakpoints.down('sm')]: {
     padding: '10px',
     alignItems: 'flex-start',
@@ -64,21 +65,7 @@ const ChangePasswordWrapper = styled('div')(({ theme }) => ({
   },
 }));
 
-const VelustroContainer = styled('div')({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100vw',
-  height: '100vh',
-  zIndex: -1,
-  overflow: 'hidden',
-  '& > *': {
-    width: '100% !important',
-    height: '100% !important',
-    minWidth: '100vw',
-    minHeight: '100vh',
-  }
-});
+
 
 const ChangePasswordContent = styled(motion.div)(({ theme }) => ({
   width: '100%',
@@ -105,11 +92,10 @@ const ChangePasswordContent = styled(motion.div)(({ theme }) => ({
 
 const ChangePasswordFormContainer = styled(Paper)(({ theme }) => ({
   padding: '40px',
-  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+  boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
   borderRadius: '20px',
-  backgroundColor: 'rgba(0, 0, 0, 0.75)',
-  backdropFilter: 'blur(15px)',
-  border: '1px solid rgba(255, 255, 255, 0.18)',
+  backgroundColor: '#ffffff',
+  border: '1px solid #e0e0e0',
   transition: 'all 0.3s ease-in-out',
   width: '100%',
   position: 'relative',
@@ -166,10 +152,10 @@ const LockIcon = styled(FaLock)(({ theme }) => ({
 const PasswordCriteria = styled(Box)(({ theme }) => ({
   marginTop: '12px',
   padding: '16px',
-  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+  backgroundColor: '#f5f5f5',
   borderRadius: '12px',
   width: '100%',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
+  border: '1px solid #e0e0e0',
   transition: 'all 0.3s ease',
   [theme.breakpoints.down('sm')]: {
     padding: '12px',
@@ -192,7 +178,7 @@ const CriteriaItem = styled(Box)(({ isValid, theme }) => ({
   display: 'flex',
   alignItems: 'center',
   margin: '6px 0',
-  color: isValid ? '#4caf50' : 'rgba(255, 255, 255, 0.7)',
+  color: isValid ? '#4caf50' : '#666666',
   fontSize: '0.875rem',
   transition: 'color 0.3s ease',
   [theme.breakpoints.down('sm')]: {
@@ -211,37 +197,37 @@ const CriteriaItem = styled(Box)(({ isValid, theme }) => ({
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: '#ffffff',
     borderRadius: '8px',
     transition: 'all 0.3s ease',
     '& fieldset': {
-      borderColor: 'rgba(255, 255, 255, 0.3)',
+      borderColor: '#d0d0d0',
       transition: 'border-color 0.3s ease',
     },
     '&:hover fieldset': {
-      borderColor: 'rgba(255, 255, 255, 0.5)',
+      borderColor: '#b0b0b0',
     },
     '&.Mui-focused fieldset': {
       borderColor: '#4a90e2',
       borderWidth: '2px',
     },
     '& input': {
-      color: 'white',
+      color: '#333333',
       fontSize: '1rem',
       '&::placeholder': {
-        color: 'rgba(255, 255, 255, 0.7)',
+        color: '#888888',
         opacity: 1,
       },
       '&:-webkit-autofill': {
-        WebkitBoxShadow: '0 0 0 1000px rgba(255, 255, 255, 0.1) inset',
-        WebkitTextFillColor: 'white',
-        caretColor: 'white',
+        WebkitBoxShadow: '0 0 0 1000px #ffffff inset',
+        WebkitTextFillColor: '#333333',
+        caretColor: '#333333',
         transition: 'background-color 5000s ease-in-out 0s',
       },
     }
   },
   '& .MuiInputLabel-root': {
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: '#666666',
     fontSize: '1rem',
     '&.Mui-focused': {
       color: '#4a90e2',
@@ -539,11 +525,6 @@ const ChangePassword = () => {
   return (
     <ThemeProvider theme={theme}>
       <ChangePasswordWrapper>
-        {/* Extended Background Animation */}
-        <VelustroContainer>
-          <Velustro />
-        </VelustroContainer>
-        
         {/* Centered Content Container */}
         <CenteredContainer>
           <Container 

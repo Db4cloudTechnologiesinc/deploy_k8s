@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { FaEye, FaEyeSlash, FaCheck, FaTimes, FaLock, FaExclamationTriangle } from 'react-icons/fa';
-import { Velustro } from "uvcanvas";
+
 import { 
   resetPassword, 
   clearError, 
@@ -33,7 +33,7 @@ import authService from '../../../screens/api/auth';
 // Create theme
 const theme = createTheme();
 
-// Styled components for the background and container
+// Styled components for the white background and container
 const PageWrapper = styled('div')({
   minHeight: '100vh',
   width: '100%',
@@ -42,15 +42,7 @@ const PageWrapper = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   padding: '20px',
-});
-
-const BackgroundCanvas = styled('div')({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: 0,
+  backgroundColor: '#ffffff',
 });
 
 const ContentContainer = styled(motion.div)(({ theme }) => ({
@@ -69,9 +61,9 @@ const ResetPasswordPaper = styled(Paper)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   borderRadius: '15px',
-  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-  backgroundColor: 'rgba(255, 255, 255, 0.85)',
-  backdropFilter: 'blur(10px)',
+  boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#ffffff',
+  border: '1px solid #e0e0e0',
   [theme.breakpoints.down('sm')]: {
     padding: '24px 16px',
   },
@@ -80,9 +72,10 @@ const ResetPasswordPaper = styled(Paper)(({ theme }) => ({
 const PasswordCriteria = styled(Box)(({ theme }) => ({
   marginTop: '10px',
   padding: '16px',
-  backgroundColor: 'rgba(245, 245, 245, 0.9)',
+  backgroundColor: '#f5f5f5',
   borderRadius: '10px',
   width: '100%',
+  border: '1px solid #e0e0e0',
   [theme.breakpoints.down('sm')]: {
     padding: '12px',
   },
@@ -92,7 +85,7 @@ const CriteriaItem = styled(Box)(({ isValid }) => ({
   display: 'flex',
   alignItems: 'center',
   margin: '5px 0',
-  color: isValid ? 'green' : 'inherit',
+  color: isValid ? '#4caf50' : '#666666',
 }));
 
 const IconContainer = styled(Box)({
@@ -377,9 +370,6 @@ const ResetPassword = () => {
     return (
       <ThemeProvider theme={theme}>
         <PageWrapper>
-          <BackgroundCanvas>
-            <Velustro />
-          </BackgroundCanvas>
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'center', 
@@ -399,9 +389,6 @@ const ResetPassword = () => {
     return (
       <ThemeProvider theme={theme}>
         <PageWrapper>
-          <BackgroundCanvas>
-            <Velustro />
-          </BackgroundCanvas>
           <ContentContainer
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -447,10 +434,6 @@ const ResetPassword = () => {
   return (
     <ThemeProvider theme={theme}>
       <PageWrapper>
-        <BackgroundCanvas>
-          <Velustro />
-        </BackgroundCanvas>
-        
         <ContentContainer
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

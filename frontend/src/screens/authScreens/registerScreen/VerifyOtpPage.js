@@ -16,7 +16,7 @@ import {
   useMediaQuery
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Velustro } from "uvcanvas";
+
 import { 
   verifyOtp, 
   resendOtp,
@@ -39,15 +39,7 @@ const PageWrapper = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   padding: '20px',
-});
-
-const BackgroundCanvas = styled('div')({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  zIndex: 0,
+  backgroundColor: '#ffffff',
 });
 
 const ContentContainer = styled(motion.div)(({ theme }) => ({
@@ -66,9 +58,9 @@ const VerifyPaper = styled(Paper)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   borderRadius: '15px',
-  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-  backgroundColor: 'rgba(255, 255, 255, 0.85)',
-  backdropFilter: 'blur(10px)',
+  boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#ffffff',
+  border: '1px solid #e0e0e0',
   [theme.breakpoints.down('sm')]: {
     padding: '24px 16px',
   },
@@ -88,13 +80,23 @@ const OtpInput = styled(TextField)({
     textAlign: 'center',
     fontSize: '1.5rem',
     padding: '8px 0',
+    color: '#333333',
   },
   '& .MuiOutlinedInput-root': {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: '#ffffff',
     borderRadius: '8px',
+    '& fieldset': {
+      borderColor: '#d0d0d0',
+    },
+    '&:hover fieldset': {
+      borderColor: '#b0b0b0',
+    },
     '&.Mui-focused fieldset': {
       borderColor: '#4a90e2',
     },
+  },
+  '& .MuiInputLabel-root': {
+    color: '#666666',
   },
   '& .MuiInputLabel-root.Mui-focused': {
     color: '#4a90e2',
@@ -276,10 +278,6 @@ const VerifyOtpPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <PageWrapper>
-        <BackgroundCanvas>
-          <Velustro />
-        </BackgroundCanvas>
-        
         <ContentContainer
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

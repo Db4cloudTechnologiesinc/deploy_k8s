@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Box, Button, TextField, Typography, Container, InputAdornment, IconButton, Grid, LinearProgress } from '@mui/material';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Velustro } from "uvcanvas";
+
 import "./RegisterPage.css";
 
 const RegisterPage = () => {
@@ -187,9 +187,6 @@ const apiData = {
 
   return (
     <div className="register-main-wrapper">
-      <div className="velustro-container">
-        <Velustro />
-      </div>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -204,37 +201,40 @@ const apiData = {
             p: 4,
             boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
             borderRadius: '20px',
-            backgroundColor: 'rgba(0, 0, 0, 0.75)',
-            backdropFilter: 'blur(15px)',
-            border: '1px solid rgba(255, 255, 255, 0.18)',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e0e0e0',
+            boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
             '& .MuiTextField-root': {
               '& .MuiOutlinedInput-root': {
-                backgroundColor: 'black',
+                backgroundColor: '#ffffff',
                 '& fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  borderColor: '#d0d0d0',
                 },
                 '&:hover fieldset': {
-                  borderColor: 'rgba(255, 255, 255, 0.5)',
+                  borderColor: '#b0b0b0',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#4a90e2',
                 },
                 '& input': {
-                  color: 'white',
+                  color: '#333333',
                   '&::placeholder': {
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: '#888888',
                   },
                   '&:-webkit-autofill': {
-            WebkitBoxShadow: '0 0 0 1000px black inset',
-            WebkitTextFillColor: 'white',
-            caretColor: 'white',
-            transition: 'background-color 5002s ease-in-out 0s',
+            WebkitBoxShadow: '0 0 0 1000px #ffffff inset',
+            WebkitTextFillColor: '#333333',
+            caretColor: '#333333',
+            transition: 'background-color 5000s ease-in-out 0s',
                 },
                 '&:-webkit-autofill:hover, &:-webkit-autofill:focus': {
-            WebkitBoxShadow: '0 0 0 1000px black inset',
-            WebkitTextFillColor: 'white',
+            WebkitBoxShadow: '0 0 0 1000px #ffffff inset',
+            WebkitTextFillColor: '#333333',
           },
         }
               },
               '& .MuiInputLabel-root': {
-                color: 'rgba(255, 255, 255, 0.7)',
+                color: '#666666',
               }
             }
           }}
@@ -245,7 +245,7 @@ const apiData = {
             sx={{
               mb: 2,
               textAlign: 'center',
-              color: 'white',
+              color: '#333333',
               fontWeight: 600,
               textTransform: 'uppercase',
               letterSpacing: '2px'
@@ -327,7 +327,7 @@ const apiData = {
                     <IconButton
                       onClick={togglePasswordVisibility}
                       edge="end"
-                      sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                      sx={{ color: '#666666' }}
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </IconButton>
@@ -376,7 +376,7 @@ const apiData = {
                     <IconButton
                       onClick={toggleConfirmPasswordVisibility}
                       edge="end"
-                      sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                      sx={{ color: '#666666' }}
                     >
                       {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                     </IconButton>
@@ -416,7 +416,7 @@ const apiData = {
               sx={{
                 mt: 2,
                 textAlign: 'center',
-                color: 'rgba(255, 255, 255, 0.8)',
+                color: '#666666',
                 '& a': {
                   color: '#4a90e2',
                   textDecoration: 'none',

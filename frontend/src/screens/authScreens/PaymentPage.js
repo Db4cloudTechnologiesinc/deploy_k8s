@@ -16,7 +16,7 @@ import {
   Divider
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Velustro } from "uvcanvas";
+
 import PaymentGateway from '../../components/PaymentGateway';
 import authService from '../api/auth';
 
@@ -116,22 +116,11 @@ const PaymentPage = () => {
       sx={{
         minHeight: '100vh',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        backgroundColor: '#ffffff'
       }}
     >
-      {/* Background Animation */}
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          zIndex: -1
-        }}
-      >
-        <Velustro />
-      </Box>
+
 
       <Container maxWidth="md" sx={{ py: 4, position: 'relative', zIndex: 1 }}>
         <motion.div
@@ -143,10 +132,10 @@ const PaymentPage = () => {
             elevation={8}
             sx={{
               p: 4,
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(10px)',
+              backgroundColor: '#ffffff',
               borderRadius: '20px',
-              border: '1px solid rgba(255, 255, 255, 0.2)'
+              border: '1px solid #e0e0e0',
+              boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.1)'
             }}
           >
             {/* Header */}

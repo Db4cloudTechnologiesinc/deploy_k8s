@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Velustro } from "uvcanvas";
+
 import { debounce } from 'lodash';
 import { 
   loginUser, 
@@ -42,17 +42,8 @@ const LoginWrapper = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   position: 'relative',
-  overflow: 'hidden',
   padding: '20px',
-});
-
-const VelustroContainer = styled('div')({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-  zIndex: -1,
+  backgroundColor: '#ffffff',
 });
 
 const LoginContent = styled(motion.div)({
@@ -67,11 +58,10 @@ const LoginContent = styled(motion.div)({
 
 const LoginFormContainer = styled(Container)({
   padding: '32px',
-  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+  boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
   borderRadius: '20px',
-  backgroundColor: 'rgba(0, 0, 0, 0.75)',
-  backdropFilter: 'blur(15px)',
-  border: '1px solid rgba(255, 255, 255, 0.18)',
+  backgroundColor: '#ffffff',
+  border: '1px solid rgba(0, 0, 0, 0.1)',
   '@media (max-width: 600px)': {
     padding: '24px',
     marginTop: '32px',
@@ -307,32 +297,32 @@ const handleRequestVerification = useCallback(() => {
   // Custom text field styling
   const textFieldSx = {
     '& .MuiOutlinedInput-root': {
-      backgroundColor: 'black',
+      backgroundColor: '#ffffff',
       '& fieldset': {
-        borderColor: 'rgba(255, 255, 255, 0.3)',
+        borderColor: 'rgba(0, 0, 0, 0.23)',
       },
       '&:hover fieldset': {
-        borderColor: 'rgba(255, 255, 255, 0.5)',
+        borderColor: 'rgba(0, 0, 0, 0.87)',
       },
       '&.Mui-focused fieldset': {
         borderColor: '#4a90e2',
       },
       '& input': {
-        color: 'white',
+        color: '#000000',
         '&::placeholder': {
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: 'rgba(0, 0, 0, 0.6)',
           opacity: 1,
         },
         '&:-webkit-autofill': {
-          WebkitBoxShadow: '0 0 0 1000px black inset',
-          WebkitTextFillColor: 'white',
-          caretColor: 'white',
+          WebkitBoxShadow: '0 0 0 1000px white inset',
+          WebkitTextFillColor: '#000000',
+          caretColor: '#000000',
           transition: 'background-color 5002s ease-in-out 0s',
         },
       }
     },
     '& .MuiInputLabel-root': {
-      color: 'rgba(255, 255, 255, 0.7)',
+      color: 'rgba(0, 0, 0, 0.6)',
       '&.Mui-focused': {
         color: '#4a90e2',
       }
@@ -343,9 +333,7 @@ const handleRequestVerification = useCallback(() => {
   return (
     <ThemeProvider theme={theme}>
       <LoginWrapper>
-        <VelustroContainer>
-          <Velustro />
-        </VelustroContainer>
+
         
         <LoginContent
           initial={{ opacity: 0, y: 20 }}
@@ -366,7 +354,7 @@ const handleRequestVerification = useCallback(() => {
               sx={{
                 mb: 2,
                 textAlign: 'center',
-                color: 'white',
+                color: '#333333',
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '2px'
@@ -481,13 +469,13 @@ const handleRequestVerification = useCallback(() => {
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={togglePasswordVisibility}
-                        edge="end"
-                        aria-label="toggle password visibility"
-                        sx={{ color: 'rgba(255, 255, 255, 0.7)' }}
-                        size={isMobile ? "small" : "medium"}
-                        disabled={loading || isSubmitting}
-                        type="button" // Explicitly set type to button
+                      onClick={togglePasswordVisibility}
+                      edge="end"
+                      aria-label="toggle password visibility"
+                      sx={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                      size={isMobile ? "small" : "medium"}
+                      disabled={loading || isSubmitting}
+                      type="button" // Explicitly set type to button
                       >
                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                       </IconButton>
@@ -572,7 +560,7 @@ const handleRequestVerification = useCallback(() => {
                 <Typography 
                   variant="body2" 
                   sx={{
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: 'rgba(0, 0, 0, 0.7)',
                     fontSize: isMobile ? '12px' : '14px',
                     '& a': {
                       color: '#4a90e2',
@@ -592,7 +580,7 @@ const handleRequestVerification = useCallback(() => {
                   variant="body2" 
                   sx={{
                     mt: 1,
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: 'rgba(0, 0, 0, 0.7)',
                     fontSize: isMobile ? '12px' : '14px',
                     '& a': {
                       color: '#4a90e2',

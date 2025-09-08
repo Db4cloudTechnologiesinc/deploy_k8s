@@ -4,7 +4,7 @@ import { Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated, logoutUser } from '../../redux/authSlice';
-import { Novatrix } from "uvcanvas";
+
 import "./MainScreen.css";
 
 const items = [{ title: "Dashboards", icon: <FaChartBar />, delay: "0.9s" }];
@@ -65,9 +65,7 @@ const MainScreen = () => {
 
   return (
     <div className="hrms-main-wrapper">
-      <div className="novatrix-container">
-        <Novatrix />
-      </div>
+
       <div className="hrms-content-container">
         <div className="hrms-intro-container">
           <h1 className="hrms-intro-title">
