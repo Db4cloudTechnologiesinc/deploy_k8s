@@ -6,7 +6,7 @@ dotenv.config();
 // Payment configuration
 export const PAYMENT_CONFIG = {
   // Configurable payment amount in INR (paise)
-  REGISTRATION_FEE: 2000000, // ₹20,000 in paise (20000 * 100)
+  REGISTRATION_FEE: 999900, // ₹9,999 in paise (9999 * 100)
   CURRENCY: 'INR',
   
   // Plan configuration
