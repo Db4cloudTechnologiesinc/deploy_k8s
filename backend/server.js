@@ -1,5 +1,7 @@
-import express from "express"
 import dotenv from 'dotenv';
+dotenv.config();
+
+import express from "express"
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
@@ -62,7 +64,7 @@ const __dirname = path.dirname(__filename);
 
 
 
-dotenv.config();
+
 
 // Print startup diagnostics
 printStartupDiagnostics();
@@ -106,13 +108,7 @@ process.on('SIGTERM', async () => {
 const server = http.createServer(app);
 
 // Middleware to parse JSON request bodies
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
-  'http://localhost:3000',
-  'http://localhost:5002',
-  'http://127.0.0.1:3000',
-  'http://0.0.0.0:3000',
-  'http://0.0.0.0:5002'
-] ;
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',')  ;
 
 // Socket.IO setup with enhanced CORS
 const io = new Server(server, {
@@ -138,7 +134,7 @@ const io = new Server(server, {
     },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization", "x-company-code"]
+    allowedHeaders: ["Content-Type", "Authorization", "x-company-code", "X-Company-Code"]
   },
   transports: ['websocket', 'polling'],
   pingTimeout: 60000,
@@ -206,11 +202,12 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true,
   allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'Access-Control-Allow-Methods',
-    'Access-Control-Allow-Origin',
-    'X-Company-Code'
+    "Content-Type",
+    "Authorization",
+    "Access-Control-Allow-Methods",
+    "Access-Control-Allow-Origin",
+    "X-Company-Code",
+    "x-company-code"
   ]
 };
 app.use(cors(corsOptions));
