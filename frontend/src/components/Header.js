@@ -561,7 +561,7 @@ const Header = () => {
                     alt="Company Logo"
                     style={{
                       width: "auto",
-                      maxHeight: "80px",
+                      maxHeight: "120px",
                       marginLeft: "0",
                       verticalAlign: "middle",
                     }}
