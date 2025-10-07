@@ -915,9 +915,13 @@ const MainDashboard = () => {
                           >
                             Joined:{" "}
                             {employee.joiningDetails?.dateOfJoining
-                              ? new Date(
-                                  employee.joiningDetails.dateOfJoining
-                                ).toLocaleDateString()
+                              ? (() => {
+                                  const date = new Date(employee.joiningDetails.dateOfJoining);
+                                  const day = String(date.getDate()).padStart(2, '0');
+                                  const month = String(date.getMonth() + 1).padStart(2, '0');
+                                  const year = date.getFullYear();
+                                  return `${day}/${month}/${year}`;
+                                })()
                               : "N/A"}
                           </Typography>
                         </React.Fragment>

@@ -272,7 +272,8 @@ userSchema.methods.assignPermissions = function() {
         'view_payroll', 'manage_payroll',
         'view_leave', 'approve_leave', 'manage_leave_policy',
         'view_attendance', 'manage_attendance',
-        'view_reports', 'create_reports'
+        'view_reports', 'create_reports',
+        'manage_company_settings'
       ];
       break;
     case 'manager':

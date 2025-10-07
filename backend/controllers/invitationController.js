@@ -123,13 +123,13 @@ export const createInvitation = async (req, res) => {
   try {
     console.log('Received invitation request:', {
       body: req.body,
-      user: req.user ? { id: req.user.id } : 'No user',
+      user: req.user ? { id: req.user._id } : 'No user',
       companyCode: req.companyCode || 'No company code'
     });
     
     const { firstName, middleName, lastName, email, role } = req.body;
     const companyCode = req.companyCode;
-    const adminId = req.user.id;
+    const adminId = req.user._id;
     
     // Validate required fields
     if (!firstName || !lastName || !email || !role) {
