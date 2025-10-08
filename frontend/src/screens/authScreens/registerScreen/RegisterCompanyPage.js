@@ -2317,7 +2317,7 @@ const RegisterCompanyPage = () => {
                                     textAlign: "center",
                                     fontSize: isMobile ? "1.2rem" : "1.5rem",
                                     padding: isMobile ? "8px 0" : "12px 0",
-                                    color: "white",
+                                    color: "#333333",
                                   },
                                 }}
                                 disabled={loading}
