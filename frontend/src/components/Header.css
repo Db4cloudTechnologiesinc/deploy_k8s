@@ -29,48 +29,46 @@ body {
 }
 
 .responsive-logo {
-  height: 120px;
+  height: 45px;
+  max-height: 45px;
   width: auto;
+  object-fit: contain;
   transition: all 0.3s ease;
-}
-
-@media (max-width: 992px) {
-  .responsive-logo {
-    height: 120px;
-  }
 }
 
 /* Adjust sizes for different breakpoints */
 @media (min-width: 1200px) {
   .responsive-logo {
-    height: 80px;
-    max-height: 50px;
+    height: 45px;
+    max-height: 45px;
   }
 }
 
 @media (max-width: 992px) {
   .responsive-logo {
-    height: 45px;
-    max-height: 35px;
+    height: 40px;
+    max-height: 40px;
   }
 }
 
 /* Modify the brand class in the media query */
 @media (max-width: 768px) {
   .responsive-logo {
-    height: 60px;
+    height: 35px;
+    max-height: 35px;
   }
 
   .brand {
     display: flex;
-    justify-content: flex-start; /* Change from center to flex-start */
+    justify-content: flex-start;
     align-items: center;
   }
 }
 
 @media (max-width: 576px) {
   .responsive-logo {
-    height: 50px;
+    height: 35px;
+    max-height: 35px;
   }
 }
 
