@@ -1630,6 +1630,9 @@ const updateWorkInfo = async () => {
                                   }
                                 >
                                   <option value="">Select Shift</option>
+                                  <option value="General Shift">
+                                    General Shift
+                                  </option>
                                   <option value="Morning Shift">
                                     Morning Shift
                                   </option>

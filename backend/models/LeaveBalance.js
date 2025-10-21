@@ -12,7 +12,7 @@ const leaveBalanceSchema = new mongoose.Schema({
     pending: { type: Number, default: 0 }
   },
   sick: {
-    total: { type: Number, default: 12 },
+    total: { type: Number, default: 4 },
     used: { type: Number, default: 0 },
     pending: { type: Number, default: 0 }
   },

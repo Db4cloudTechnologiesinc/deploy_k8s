@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNotifications } from "../../../context/NotificationContext";
 import api from "../../../api/axiosInstance";
 import { styled } from "@mui/material/styles";
+import { formatDate } from "../../../utils/dateFormatter";
 import {
   Box,
   Button,
@@ -334,7 +335,7 @@ const handleBulkApprove = async () => {
       
       // Send notification to the user who made the request
       if (request.userId) {
-        const message = `Your shift request for ${request.requestedShift} from ${new Date(request.requestedDate).toLocaleDateString()} to ${new Date(request.requestedTill).toLocaleDateString()} has been approved.`;
+        const message = `Your shift request for ${request.requestedShift} from ${formatDate(request.requestedDate)} to ${formatDate(request.requestedTill)} has been approved.`;
         
         await sendRotatingShiftNotification(
           request.userId,
@@ -383,7 +384,7 @@ const handleBulkReject = async () => {
     // Send notifications to all affected users
     for (const request of selectedRequests) {
       if (request.userId) {
-        const message = `Your shift request for ${request.requestedShift} from ${new Date(request.requestedDate).toLocaleDateString()} to ${new Date(request.requestedTill).toLocaleDateString()} has been rejected.`;
+        const message = `Your shift request for ${request.requestedShift} from ${formatDate(request.requestedDate)} to ${formatDate(request.requestedTill)} has been rejected.`;
         
         await sendRotatingShiftNotification(
           request.userId,
@@ -455,7 +456,7 @@ const handleApprove = async (id, e) => {
     
     // Send notification to the user who made the request
     if (requestToApprove && requestToApprove.userId) {
-      const message = `Your shift request for ${requestToApprove.requestedShift} from ${new Date(requestToApprove.requestedDate).toLocaleDateString()} to ${new Date(requestToApprove.requestedTill).toLocaleDateString()} has been approved.`;
+      const message = `Your shift request for ${requestToApprove.requestedShift} from ${formatDate(requestToApprove.requestedDate)} to ${formatDate(requestToApprove.requestedTill)} has been approved.`;
       
       await sendRotatingShiftNotification(
         requestToApprove.userId,
@@ -498,7 +499,7 @@ const handleReject = async (id, e) => {
     
     // Send notification to the user who made the request
     if (requestToReject && requestToReject.userId) {
-      const message = `Your shift request for ${requestToReject.requestedShift} from ${new Date(requestToReject.requestedDate).toLocaleDateString()} to ${new Date(requestToReject.requestedTill).toLocaleDateString()} has been rejected.`;
+      const message = `Your shift request for ${requestToReject.requestedShift} from ${formatDate(requestToReject.requestedDate)} to ${formatDate(requestToReject.requestedTill)} has been rejected.`;
       
       await sendRotatingShiftNotification(
         requestToReject.userId,
@@ -1220,26 +1221,12 @@ const handleConfirmDelete = async () => {
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2">
-                      {new Date(request.requestedDate).toLocaleDateString(
-                        undefined,
-                        {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        }
-                      )}
+                      {formatDate(request.requestedDate)}
                     </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2">
-                      {new Date(request.requestedTill).toLocaleDateString(
-                        undefined,
-                        {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        }
-                      )}
+                      {formatDate(request.requestedTill)}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -1497,9 +1484,9 @@ const handleConfirmDelete = async () => {
                     {itemToDelete.requestedShift}
                     <br />
                     <strong>Date Range:</strong>{" "}
-                    {new Date(itemToDelete.requestedDate).toLocaleDateString()}{" "}
+                    {formatDate(itemToDelete.requestedDate)}{" "}
                     -{" "}
-                    {new Date(itemToDelete.requestedTill).toLocaleDateString()}
+                    {formatDate(itemToDelete.requestedTill)}
                     <br />
                     <strong>Status:</strong> {itemToDelete.status}
                   </Typography>
@@ -1672,6 +1659,7 @@ const handleConfirmDelete = async () => {
                 },
               }}
             >
+              <MenuItem value="General Shift">General Shift</MenuItem>
               <MenuItem value="Morning Shift">Morning Shift</MenuItem>
               <MenuItem value="Evening Shift">Evening Shift</MenuItem>
               <MenuItem value="Night Shift">Night Shift</MenuItem>
@@ -1897,6 +1885,7 @@ const handleConfirmDelete = async () => {
                 },
               }}
             >
+              <MenuItem value="General Shift">General Shift</MenuItem>
               <MenuItem value="Morning Shift">Morning Shift</MenuItem>
               <MenuItem value="Evening Shift">Evening Shift</MenuItem>
               <MenuItem value="Night Shift">Night Shift</MenuItem>

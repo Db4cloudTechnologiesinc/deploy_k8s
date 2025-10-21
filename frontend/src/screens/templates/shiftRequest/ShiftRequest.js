@@ -4,6 +4,7 @@ import api from "../../../api/axiosInstance";
 //new imports
 import { useSelector } from "react-redux";
 import { selectUserRole, selectUserPermissions, selectUser } from "../../../redux/authSlice";
+import { formatDate } from "../../../utils/dateFormatter";
 import {
   Box,
   Button,
@@ -1436,26 +1437,12 @@ const handleSaveEdit = async () => {
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2">
-                        {new Date(request.requestedDate).toLocaleDateString(
-                          undefined,
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          }
-                        )}
+                        {formatDate(request.requestedDate)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography variant="body2">
-                        {new Date(request.requestedTill).toLocaleDateString(
-                          undefined,
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          }
-                        )}
+                        {formatDate(request.requestedTill)}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -1714,9 +1701,9 @@ const handleSaveEdit = async () => {
                     {itemToDelete.requestedShift}
                     <br />
                     <strong>Date Range:</strong>{" "}
-                    {new Date(itemToDelete.requestedDate).toLocaleDateString()}{" "}
+                    {formatDate(itemToDelete.requestedDate)}{" "}
                     -{" "}
-                    {new Date(itemToDelete.requestedTill).toLocaleDateString()}
+                    {formatDate(itemToDelete.requestedTill)}
                     <br />
                     <strong>Status:</strong> {itemToDelete.status}
                   </Typography>
@@ -1888,6 +1875,7 @@ const handleSaveEdit = async () => {
                           },
                         }}
                       >
+                        <MenuItem value="General Shift">General Shift</MenuItem>
                         <MenuItem value="Morning Shift">Morning Shift</MenuItem>
                         <MenuItem value="Evening Shift">Evening Shift</MenuItem>
                         <MenuItem value="Night Shift">Night Shift</MenuItem>
@@ -2113,6 +2101,7 @@ const handleSaveEdit = async () => {
                           },
                         }}
                       >
+                        <MenuItem value="General Shift">General Shift</MenuItem>
                         <MenuItem value="Morning Shift">Morning Shift</MenuItem>
                         <MenuItem value="Evening Shift">Evening Shift</MenuItem>
                         <MenuItem value="Night Shift">Night Shift</MenuItem>

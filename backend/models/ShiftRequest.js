@@ -16,7 +16,7 @@ const shiftRequestSchema = new mongoose.Schema({
   requestedShift: {
     type: String,
     required: true,
-    enum: ['Morning Shift', 'Evening Shift', 'Night Shift']
+    enum: ['Morning Shift', 'Evening Shift', 'Night Shift', 'General Shift']
   },
   currentShift: {
     type: String,

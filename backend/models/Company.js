@@ -64,7 +64,7 @@ const companySchema = new mongoose.Schema({
   settings: {
     leavePolicy: {
       casualLeavePerYear: { type: Number, default: 12 },
-      sickLeavePerYear: { type: Number, default: 12 },
+      sickLeavePerYear: { type: Number, default: 4 },
       earnedLeavePerYear: { type: Number, default: 12 }
     },
     workingHours: {

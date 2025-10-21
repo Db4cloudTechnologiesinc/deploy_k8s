@@ -1416,9 +1416,11 @@ const Contract = () => {
                     label="Shift"
                   >
                     <MenuItem value="">Select Shift</MenuItem>
+                    <MenuItem value="General Shift">General Shift</MenuItem>
                     <MenuItem value="Regular">Regular</MenuItem>
-                    <MenuItem value="Night Shift">Night Shift</MenuItem>
                     <MenuItem value="Morning Shift">Morning Shift</MenuItem>
+                    <MenuItem value="Evening Shift">Evening Shift</MenuItem>
+                    <MenuItem value="Night Shift">Night Shift</MenuItem>
                     <MenuItem value="Second Shift">Second Shift</MenuItem>
                     <MenuItem value="Third Shift">Third Shift</MenuItem>
                   </Select>
