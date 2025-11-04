@@ -1,5 +1,6 @@
 import Notification, { notificationSchema } from '../models/Notification.js';
 import getModelForCompany from '../models/genericModelFactory.js';
+import { getUserModel } from '../models/User.js';
 
 export const getUserNotifications = async (req, res) => {
   try {
@@ -204,6 +205,52 @@ export const clearAllNotifications = async (req, res) => {
     res.json({ message: 'All notifications cleared' });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// Helper function to send notifications to Admin, HR, and Manager users
+export const notifyAdminHRManager = async (companyCode, message, type, status, io) => {
+  try {
+    if (!companyCode) {
+      console.error('Company code is required for notifyAdminHRManager');
+      return;
+    }
+
+    // Get all users with admin, hr, or manager roles
+    const UserModel = await getUserModel(companyCode);
+    const privilegedUsers = await UserModel.find({
+      role: { $in: ['admin', 'hr', 'manager'] },
+      isActive: true
+    });
+
+    console.log(`Found ${privilegedUsers.length} admin/hr/manager users in company ${companyCode}`);
+
+    // Get company-specific Notification model
+    const CompanyNotification = await getModelForCompany(companyCode, 'Notification', notificationSchema);
+
+    // Create notification for each privileged user
+    for (const user of privilegedUsers) {
+      const notification = new CompanyNotification({
+        message,
+        type,
+        status,
+        userId: user._id.toString(),
+        read: false,
+        time: new Date()
+      });
+
+      const savedNotification = await notification.save();
+
+      // Emit via Socket.IO if available
+      if (io) {
+        io.to(user._id.toString()).emit('new-notification', savedNotification);
+        console.log(`Notification sent to ${user.role} user: ${user._id}`);
+      }
+    }
+
+    console.log(`Notified ${privilegedUsers.length} admin/hr/manager users`);
+  } catch (error) {
+    console.error('Error in notifyAdminHRManager:', error);
   }
 };
 

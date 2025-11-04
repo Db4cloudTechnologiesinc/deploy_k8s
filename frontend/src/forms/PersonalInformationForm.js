@@ -18,6 +18,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import api from "../api/axiosInstance";
 import { toast } from "react-toastify";
+import { toISODate, fromISODate, monthNames as monthNamesUtil } from '../utils/dateFormatter';
 
 const getUserIdFromToken = () => {
   const token = localStorage.getItem("token");
@@ -139,12 +140,15 @@ const PersonalInformationForm = ({
     lastName: Yup.string()
       .matches(/^[A-Za-z\s]+$/, "Last name should only contain alphabets")
       .required("Last name is required"),
-    dob: Yup.date()
+    dob: Yup.string()
       .required("Date of birth is required")
-      .max(
-        new Date(Date.now() - 18 * 365.25 * 24 * 60 * 60 * 1000),
-        "Employee must be at least 18 years old"
-      ),
+      .test('age-18', 'Employee must be at least 18 years old', function(value) {
+        if (!value) return false;
+        const [y, m, d] = value.split('-').map(Number);
+        if (!y || !m || !d) return false;
+        const eighteenthBirthday = Date.UTC(y + 18, m - 1, d);
+        return Date.now() >= eighteenthBirthday;
+      }),
     gender: Yup.string().required("Gender is required"),
     maritalStatus: Yup.string().required("Marital status is required"),
     bloodGroup: Yup.string().required("Blood group is required"),
@@ -258,22 +262,22 @@ const PersonalInformationForm = ({
 
   // Parse dob from savedData if available
   const parseDob = (dobString) => {
-    if (!dobString) return new Date();
-    const date = new Date(dobString);
-    return isNaN(date.getTime()) ? new Date() : date;
+    if (!dobString) return { year: '', month: '', day: '' };
+    const parsed = fromISODate(dobString);
+    return parsed;
   };
 
-  const savedDob = savedData?.dob ? parseDob(savedData.dob) : new Date();
+  const savedDobParts = savedData?.dob ? parseDob(savedData.dob) : { year: '', month: '', day: '' };
 
   const initialValues = {
     prefix: savedData?.prefix || "",
     firstName: savedData?.firstName || userData.firstName || "",
     middleName: savedData?.middleName || userData.middleName || "",
     lastName: savedData?.lastName || userData.lastName || "",
-    dob: savedDob,
-    dobDay: savedData?.dobDay || savedDob.getDate(),
-    dobMonth: savedData?.dobMonth || months[savedDob.getMonth()],
-    dobYear: savedData?.dobYear || savedDob.getFullYear(),
+    dob: savedData?.dob ? (typeof savedData.dob === 'string' ? savedData.dob.slice(0, 10) : '') : '',
+    dobDay: savedData?.dobDay || savedDobParts.day || '',
+    dobMonth: savedData?.dobMonth || savedDobParts.month || '',
+    dobYear: savedData?.dobYear || savedDobParts.year || '',
     gender: savedData?.gender || "",
     maritalStatus: savedData?.maritalStatus || "",
     bloodGroup: savedData?.bloodGroup || "",
@@ -679,12 +683,12 @@ const PersonalInformationForm = ({
                             }}
                             onChange={(e) => {
                               form.setFieldValue("dobDay", e.target.value);
-                              const newDate = new Date(
+                              const isoDate = toISODate(
                                 form.values.dobYear,
-                                months.indexOf(form.values.dobMonth),
+                                form.values.dobMonth,
                                 e.target.value
                               );
-                              form.setFieldValue("dob", newDate);
+                              form.setFieldValue("dob", isoDate);
                             }}
                           >
                             <MenuItem value="">Select Day</MenuItem>
@@ -727,12 +731,12 @@ const PersonalInformationForm = ({
                             }}
                             onChange={(e) => {
                               form.setFieldValue("dobMonth", e.target.value);
-                              const newDate = new Date(
+                              const isoDate = toISODate(
                                 form.values.dobYear,
-                                months.indexOf(e.target.value),
+                                e.target.value,
                                 form.values.dobDay
                               );
-                              form.setFieldValue("dob", newDate);
+                              form.setFieldValue("dob", isoDate);
                             }}
                           >
                             <MenuItem value="">Select Month</MenuItem>
@@ -775,12 +779,12 @@ const PersonalInformationForm = ({
                             }}
                             onChange={(e) => {
                               form.setFieldValue("dobYear", e.target.value);
-                              const newDate = new Date(
+                              const isoDate = toISODate(
                                 e.target.value,
-                                months.indexOf(form.values.dobMonth),
+                                form.values.dobMonth,
                                 form.values.dobDay
                               );
-                              form.setFieldValue("dob", newDate);
+                              form.setFieldValue("dob", isoDate);
                             }}
                           >
                             <MenuItem value="">Select Year</MenuItem>

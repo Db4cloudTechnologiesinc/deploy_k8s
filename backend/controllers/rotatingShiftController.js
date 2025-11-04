@@ -1,6 +1,7 @@
 import RotatingShift, { rotatingShiftSchema } from '../models/RotatingShift.js';
 import Notification from '../models/Notification.js';
 import getModelForCompany from '../models/genericModelFactory.js';
+import { notifyAdminHRManager } from './notificationController.js';
 
 export const getAllShifts = async (req, res) => {
   try {
@@ -116,9 +117,11 @@ export const createShift = async (req, res) => {
     
     const savedShift = await newShift.save();
     
-    // Optionally, send notification to admin about new request
+    // Notify Admin/HR/Manager about the new rotating shift request
     try {
-      
+      const io = req.app.get('io');
+      const message = `${req.body.name} has requested a rotating shift to ${req.body.requestedShift} from ${new Date(req.body.requestedDate).toLocaleDateString()} to ${new Date(req.body.requestedTill).toLocaleDateString()}`;
+      await notifyAdminHRManager(companyCode, message, 'rotating-shift', 'pending', io);
     } catch (notificationError) {
       console.error('Error creating admin notification:', notificationError);
     }

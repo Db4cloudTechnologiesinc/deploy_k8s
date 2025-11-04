@@ -184,6 +184,67 @@ export const getRelativeDateString = (date) => {
 };
 
 /**
+ * Helper to pad numbers to 2 digits
+ */
+const pad2 = (n) => String(n).padStart(2, '0');
+
+/**
+ * Month names array for conversion
+ */
+export const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+
+/**
+ * Convert year, month name, and day to ISO date string (YYYY-MM-DD)
+ * This avoids timezone issues by keeping dates as strings
+ * @param {number} year - Full year (e.g., 2024)
+ * @param {string} monthName - Month name (e.g., "January")
+ * @param {number} day - Day of month (1-31)
+ * @returns {string} ISO date string (YYYY-MM-DD)
+ */
+export const toISODate = (year, monthName, day) => {
+  if (!year || !monthName || !day) return '';
+  const monthIndex = monthNames.indexOf(monthName);
+  if (monthIndex === -1) return '';
+  return `${year}-${pad2(monthIndex + 1)}-${pad2(day)}`;
+};
+
+/**
+ * Parse ISO date string to components
+ * @param {string} isoDate - Date string in YYYY-MM-DD format
+ * @returns {object} Object with year, month (name), and day
+ */
+export const fromISODate = (isoDate) => {
+  if (!isoDate) return { year: '', month: '', day: '' };
+  
+  try {
+    const dateStr = typeof isoDate === 'string' ? isoDate : isoDate.toISOString();
+    const [year, month, day] = dateStr.slice(0, 10).split('-').map(Number);
+    
+    return {
+      year,
+      month: monthNames[month - 1] || '',
+      day
+    };
+  } catch (error) {
+    console.error('Error parsing ISO date:', error);
+    return { year: '', month: '', day: '' };
+  }
+};
+
+/**
+ * Compare two ISO date strings
+ * @param {string} date1 - First date (YYYY-MM-DD)
+ * @param {string} date2 - Second date (YYYY-MM-DD)
+ * @returns {number} -1 if date1 < date2, 0 if equal, 1 if date1 > date2
+ */
+export const compareISODates = (date1, date2) => {
+  if (!date1 || !date2) return 0;
+  if (date1 === date2) return 0;
+  return date1 < date2 ? -1 : 1;
+};
+
+/**
  * Export default object with all functions
  */
 export default {
@@ -193,5 +254,9 @@ export default {
   parseDateString,
   formatDateWithMonthName,
   formatDateRange,
-  getRelativeDateString
+  getRelativeDateString,
+  toISODate,
+  fromISODate,
+  compareISODates,
+  monthNames
 };

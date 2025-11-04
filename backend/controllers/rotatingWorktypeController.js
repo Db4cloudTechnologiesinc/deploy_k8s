@@ -1,6 +1,7 @@
 import RotatingWorktype, { rotatingWorktypeSchema } from '../models/RotatingWorktype.js';
 import Notification from '../models/Notification.js';
 import getModelForCompany from '../models/genericModelFactory.js';
+import { notifyAdminHRManager } from './notificationController.js';
 
 // Get all worktypes with filtering options
 export const getAllWorktypes = async (req, res) => {
@@ -116,6 +117,16 @@ export const createWorktype = async (req, res) => {
     
     const newWorktype = new CompanyRotatingWorktype(req.body);
     const savedWorktype = await newWorktype.save();
+    
+    // Notify Admin/HR/Manager about the new rotating worktype request
+    try {
+      const io = req.app.get('io');
+      const message = `${req.body.name} has requested rotating worktype change to ${req.body.requestedWorktype} from ${new Date(req.body.requestedDate).toLocaleDateString()} to ${new Date(req.body.requestedTill).toLocaleDateString()}`;
+      await notifyAdminHRManager(companyCode, message, 'rotating-worktype', 'pending', io);
+    } catch (notificationError) {
+      console.error('Error notifying admin/hr/manager:', notificationError);
+    }
+    
     res.status(201).json(savedWorktype);
   } catch (error) {
     console.error('Error creating worktype:', error);

@@ -4,9 +4,10 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import api from "../api/axiosInstance";
 import { toast } from 'react-toastify';
+import { toISODate, fromISODate, monthNames } from '../utils/dateFormatter';
 
 const days = Array.from({length: 31}, (_, i) => i + 1);
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const months = monthNames;
 const years = Array.from({length: 50}, (_, i) => new Date().getFullYear() - i);
 
 // Department options
@@ -87,17 +88,17 @@ const JoiningDetailsForm = ({ nextStep, prevStep, handleFormDataChange, savedJoi
     employeeType: Yup.string().required('Employee type is required'),
     
     // Custom validation to ensure joining date is on or after appointment date
-    joiningDate: Yup.date().test(
+    joiningDate: Yup.mixed().test(
       'joining-after-appointment',
       'Date of joining must be on or after date of appointment',
       function(value) {
         const { appointmentDay, appointmentMonth, appointmentYear, joiningDay, joiningMonth, joiningYear } = this.parent;
         
         if (appointmentDay && appointmentMonth && appointmentYear && joiningDay && joiningMonth && joiningYear) {
-          const appointmentDate = new Date(appointmentYear, months.indexOf(appointmentMonth), appointmentDay);
-          const joiningDate = new Date(joiningYear, months.indexOf(joiningMonth), joiningDay);
+          const appUTC = Date.UTC(appointmentYear, months.indexOf(appointmentMonth), appointmentDay);
+          const joinUTC = Date.UTC(joiningYear, months.indexOf(joiningMonth), joiningDay);
           
-          return joiningDate >= appointmentDate;
+          return joinUTC >= appUTC;
         }
         return true;
       }
@@ -108,16 +109,16 @@ const JoiningDetailsForm = ({ nextStep, prevStep, handleFormDataChange, savedJoi
     try {
       setIsSubmitting(true);
       
-      // Create actual Date objects
-      const appointmentDate = new Date(
+      // Create ISO date strings (YYYY-MM-DD) to avoid timezone issues
+      const appointmentDate = toISODate(
         values.appointmentYear,
-        months.indexOf(values.appointmentMonth),
+        values.appointmentMonth,
         values.appointmentDay
       );
       
-      const joiningDate = new Date(
+      const joiningDate = toISODate(
         values.joiningYear,
-        months.indexOf(values.joiningMonth),
+        values.joiningMonth,
         values.joiningDay
       );
       

@@ -224,6 +224,7 @@ const Header = () => {
   const cleanupTimesheet = () => {
     if (timerIntervalRef.current) {
       clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
     }
   };
 
@@ -405,8 +406,26 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      // Clean up timesheet first
+      // If timer is running, perform check-out before cleanup
+      if (isTimerRunning && startTime) {
+        const checkInTime = new Date(startTime);
+        const checkOutTime = new Date();
+        const durationInSeconds = Math.floor(
+          (checkOutTime - checkInTime) / 1000
+        );
+        try {
+          await timesheetService.checkOut(employeeId, durationInSeconds, token);
+          showToastMessage("Checked out before logout");
+        } catch (error) {
+          console.error("Check-out on logout failed:", error);
+          showToastMessage("Check-out failed during logout.");
+        }
+      }
+      // Clean up timesheet
       cleanupTimesheet();
+      setIsTimerRunning(false);
+      setTimer(0);
+      setStartTime(null);
 
       // Clear profile data
       setProfileData(null);
@@ -441,6 +460,9 @@ const Header = () => {
 
       // Even if there's an error, force logout by clearing everything
       cleanupTimesheet();
+      setIsTimerRunning(false);
+      setTimer(0);
+      setStartTime(null);
       setProfileData(null);
 
       // Clear localStorage regardless of error
@@ -561,9 +583,7 @@ const Header = () => {
                     alt="Company Logo"
                     style={{
                       width: "auto",
-                      maxHeight: "45px",
-                      height: "45px",
-                      objectFit: "contain",
+                      maxHeight: "80px",
                       marginLeft: "0",
                       verticalAlign: "middle",
                     }}

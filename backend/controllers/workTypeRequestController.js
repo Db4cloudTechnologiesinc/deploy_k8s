@@ -1,6 +1,7 @@
 import WorkTypeRequest, { workTypeRequestSchema } from '../models/WorkTypeRequest.js';
 import Notification from '../models/Notification.js';
 import getModelForCompany from '../models/genericModelFactory.js';
+import { notifyAdminHRManager } from './notificationController.js';
 
 export const getWorkTypeRequestsByUserId = async (req, res) => {
   try {
@@ -87,6 +88,16 @@ export const createWorkTypeRequest = async (req, res) => {
     
     const newWorkTypeRequest = new CompanyWorkTypeRequest(req.body);
     const savedRequest = await newWorkTypeRequest.save();
+    
+    // Notify Admin/HR/Manager about the new work type request
+    try {
+      const io = req.app.get('io');
+      const message = `${req.body.name} has requested a work type change to ${req.body.requestedWorkType} from ${new Date(req.body.requestedDate).toLocaleDateString()} to ${new Date(req.body.requestedTill).toLocaleDateString()}`;
+      await notifyAdminHRManager(companyCode, message, 'worktype', 'pending', io);
+    } catch (notificationError) {
+      console.error('Error notifying admin/hr/manager:', notificationError);
+    }
+    
     res.status(201).json(savedRequest);
   } catch (error) {
     console.error('Error creating work type request:', error);

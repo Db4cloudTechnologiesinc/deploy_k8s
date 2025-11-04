@@ -207,10 +207,14 @@ const handleSubmit = useCallback(async (e) => {
   }
   
   // Prevent double submission
-  if (isSubmitting || loading) return;
+  if (isSubmitting || loading) {
+    console.log('Submission blocked - already in progress');
+    return;
+  }
   
   // Validate form inputs
   if (!validateForm()) {
+    console.log('Form validation failed');
     return;
   }
   
@@ -223,6 +227,16 @@ const handleSubmit = useCallback(async (e) => {
   
   // Set submission state
   setIsSubmitting(true);
+  console.log('Login submission started');
+  
+  // Add timeout to reset loading state if it takes too long
+  const timeoutId = setTimeout(() => {
+    console.warn('Login timeout - resetting loading state');
+    if (isMounted.current) {
+      setIsSubmitting(false);
+      dispatch(setAuthError('Login timeout. Please try again.'));
+    }
+  }, 30000); // 30 seconds timeout
   
   try {
     console.log('Submitting login form with:', {
@@ -237,38 +251,39 @@ const handleSubmit = useCallback(async (e) => {
       email: formData.email.trim().toLowerCase(),
       password: formData.password,
       companyCode: formData.companyCode.trim().toUpperCase()
-    }));
+    })).unwrap();
     
-    console.log('Login response in component:', {
-      success: loginUser.fulfilled.match(resultAction),
-      payload: resultAction.payload,
-      error: resultAction.error
-    });
+    console.log('Login successful:', resultAction);
+    
+    // Clear timeout on success
+    clearTimeout(timeoutId);
     
     // Clear pending login on success
-    if (loginUser.fulfilled.match(resultAction)) {
-      sessionStorage.removeItem('pendingLogin');
-      
-      // Navigate to dashboard on success
-      console.log('Login successful, navigating to dashboard');
-      navigate('/Dashboards');
-    } else if (loginUser.rejected.match(resultAction)) {
-      // Handle specific error cases
-      const errorPayload = resultAction.payload;
-      
-      if (errorPayload && errorPayload.requiresVerification) {
-        console.log('Verification required for:', errorPayload.email);
-        // The error message will be set by the reducer
-      } else {
-        console.log('Login failed:', errorPayload);
-      }
-    }
+    sessionStorage.removeItem('pendingLogin');
+    
+    // Navigate to dashboard on success
+    console.log('Navigating to dashboard');
+    navigate('/Dashboards');
+    
   } catch (error) {
     console.error('Login error in component:', error);
-    dispatch(setAuthError(error.message || 'Login failed. Please try again.'));
+    
+    // Clear timeout on error
+    clearTimeout(timeoutId);
+    
+    // Handle specific error cases
+    if (error && error.requiresVerification) {
+      console.log('Verification required for:', error.email);
+      // The error message will be set by the reducer
+    } else {
+      const errorMessage = typeof error === 'string' ? error : 
+                          error?.message || 'Login failed. Please try again.';
+      console.log('Login failed:', errorMessage);
+    }
   } finally {
     if (isMounted.current) {
       setIsSubmitting(false);
+      console.log('Login submission completed');
     }
   }
 }, [formData, isSubmitting, loading, validateForm, dispatch, navigate]);

@@ -1,6 +1,7 @@
 import ShiftRequest, { shiftRequestSchema } from '../models/ShiftRequest.js';
 import Notification from '../models/Notification.js';
 import getModelForCompany from '../models/genericModelFactory.js';
+import { notifyAdminHRManager } from './notificationController.js';
 
 export const getAllShiftRequests = async (req, res) => {
   try {
@@ -109,6 +110,12 @@ export const createShiftRequest = async (req, res) => {
     });
     
     const savedRequest = await newShiftRequest.save();
+    
+    // Notify Admin/HR/Manager about the new request
+    const io = req.app.get('io');
+    const message = `${req.body.name} has requested a shift change to ${req.body.requestedShift} from ${new Date(req.body.requestedDate).toLocaleDateString()} to ${new Date(req.body.requestedTill).toLocaleDateString()}`;
+    await notifyAdminHRManager(companyCode, message, 'shift', 'pending', io);
+    
     res.status(201).json(savedRequest);
   } catch (error) {
     console.error('Error creating shift request:', error);

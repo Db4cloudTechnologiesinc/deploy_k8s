@@ -3,6 +3,7 @@ import { myLeaveRequestSchema } from '../models/MyLeaveRequest.js';
 import { leaveBalanceSchema } from '../models/LeaveBalance.js';
 import getModelForCompany from '../models/genericModelFactory.js';
 import mongoose from 'mongoose'; // required for Notification model usage
+import { notifyAdminHRManager } from './notificationController.js';
 
 // Fix for calculateBusinessDays function
 const calculateBusinessDays = (startDate, endDate, isHalfDay) => {
@@ -206,6 +207,11 @@ export const createLeaveRequest = async (req, res) => { try {
     // Update pending balance
     leaveBalance[leaveType].pending += numberOfDays;
     await leaveBalance.save();
+    
+    // Notify Admin/HR/Manager about the new leave request
+    const io = req.app.get('io');
+    const message = `${req.body.fullName || req.body.employeeName || employeeCode} has requested ${leaveType} leave from ${new Date(startDate).toLocaleDateString()} to ${new Date(endDate).toLocaleDateString()} (${numberOfDays} days)`;
+    await notifyAdminHRManager(companyCode, message, 'leave', 'pending', io);
     
     res.status(201).json(savedLeaveRequest);
   } catch (error) {

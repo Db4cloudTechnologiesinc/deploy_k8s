@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUserRole, selectUser } from "../../../redux/authSlice";
 import api, {getAssetUrl} from "../../../api/axiosInstance";
+import { formatDate, formatDateForInput } from "../../../utils/dateFormatter";
 import {
   Container,
   Row,
@@ -1568,9 +1569,7 @@ const updateWorkInfo = async () => {
                                   name="dateOfJoining"
                                   value={
                                     workInfo.dateOfJoining
-                                      ? new Date(workInfo.dateOfJoining)
-                                          .toISOString()
-                                          .split("T")[0]
+                                      ? formatDateForInput(workInfo.dateOfJoining)
                                       : ""
                                   }
                                   onChange={(e) => handleInputChange(e, "work")}
@@ -1588,9 +1587,7 @@ const updateWorkInfo = async () => {
                                   name="dateOfAppointment"
                                   value={
                                     workInfo.dateOfAppointment
-                                      ? new Date(workInfo.dateOfAppointment)
-                                          .toISOString()
-                                          .split("T")[0]
+                                      ? formatDateForInput(workInfo.dateOfAppointment)
                                       : ""
                                   }
                                   onChange={(e) => handleInputChange(e, "work")}
@@ -1836,11 +1833,12 @@ const updateWorkInfo = async () => {
                                 <Form.Control
                                   type="text"
                                   name="dob"
-                                  value={personalInfo.dob || ""}
+                                  value={personalInfo.dob ? formatDate(personalInfo.dob) : ""}
                                   onChange={(e) =>
                                     handleInputChange(e, "personal")
                                   }
                                   disabled={!editMode || !canEditProfile()}
+                                  readOnly
                                 />
                               </Form.Group>
                             </Col>

@@ -1,6 +1,7 @@
 import TimeOffRequest, { timeOffRequestSchema } from '../models/TimeOffRequest.js';
 import Notification from '../models/Notification.js';
 import getModelForCompany from '../models/genericModelFactory.js';
+import { notifyAdminHRManager } from './notificationController.js';
 
 // Get all time off requests
 export const getAllRequests = async (req, res) => {
@@ -150,6 +151,16 @@ export const createRequest = async (req, res) => {
     const savedRequest = await newRequest.save();
     
     console.log(`Time off request created successfully for ${req.body.name}`);
+    
+    // Notify Admin/HR/Manager about the new time off request
+    try {
+      const io = req.app.get('io');
+      const message = `${req.body.name} has requested time off for ${req.body.day} on ${new Date(req.body.date).toLocaleDateString()}`;
+      await notifyAdminHRManager(companyCode, message, 'timeoff', 'pending', io);
+    } catch (notificationError) {
+      console.error('Error notifying admin/hr/manager:', notificationError);
+    }
+    
     res.status(201).json(savedRequest);
   } catch (error) {
     console.error('Error creating time off request:', error);
