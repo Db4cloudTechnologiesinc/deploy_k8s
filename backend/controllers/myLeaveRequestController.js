@@ -166,14 +166,8 @@ export const createLeaveRequest = async (req, res) => { try {
       // Create new balance if not exists
       leaveBalance = new CompanyLeaveBalance({ 
         employeeCode,
-        annual: { total: 15, used: 0, pending: 0 },
-        sick: { total: 12, used: 0, pending: 0 },
-        personal: { total: 5, used: 0, pending: 0 },
-        maternity: { total: 90, used: 0, pending: 0 },
-        paternity: { total: 15, used: 0, pending: 0 },
         casual: { total: 12, used: 0, pending: 0 },
-        earned: { total: 15, used: 0, pending: 0 },
-        lastAccrualDate: new Date()
+        sick: { total: 4, used: 0, pending: 0 }
       });
       await leaveBalance.save();
     } else {

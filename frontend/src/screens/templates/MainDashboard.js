@@ -199,22 +199,28 @@ const MainDashboard = () => {
       // to use the api instance as well
       const holidaysResponse = await fetchHolidays();
 
-      const holidays = holidaysResponse.data.map((holiday) => ({
-        id: holiday._id,
-        title: holiday.name,
-        date: holiday.startDate,
-        content: `Holiday${
-          holiday.recurring ? " (Recurring)" : ""
-        } from ${new Date(
-          holiday.startDate
-        ).toLocaleDateString()} to ${new Date(
-          holiday.endDate
-        ).toLocaleDateString()}`,
-        type: "holiday",
-        icon: <Event />,
-        color: "#2196F3",
-        bgColor: "#E3F2FD",
-      }));
+      const holidays = holidaysResponse.data.map((holiday) => {
+        const startDate = formatDate(holiday.startDate);
+        const endDate = formatDate(holiday.endDate);
+        const isOneDay = startDate === endDate;
+        
+        return {
+          id: holiday._id,
+          title: holiday.name,
+          date: holiday.startDate,
+          endDate: holiday.endDate,
+          startDate: holiday.startDate,
+          content: `Holiday${holiday.recurring ? " (Recurring)" : ""} ${
+            isOneDay 
+              ? `on ${startDate}` 
+              : `from ${startDate} to ${endDate}`
+          }`,
+          type: "holiday",
+          icon: <Event />,
+          color: "#2196F3",
+          bgColor: "#E3F2FD",
+        };
+      });
 
       // Fetch company holidays
       const companyHolidaysResponse = await api.get(`/companyHolidays`);
@@ -231,17 +237,28 @@ const MainDashboard = () => {
 
       // Fetch restricted leaves
       const restrictLeavesResponse = await api.get(`/restrictLeaves`);
-      const restrictLeaves = restrictLeavesResponse.data.map((leave) => ({
-        id: leave._id,
-        title: leave.title,
-        date: leave.startDate,
-        content: `${leave.description} (${leave.department}, ${leave.jobPosition})`,
-        endDate: leave.endDate,
-        type: "restrictLeave",
-        icon: <Block />,
-        color: "#F44336",
-        bgColor: "#FFEBEE",
-      }));
+      const restrictLeaves = restrictLeavesResponse.data.map((leave) => {
+        const startDate = formatDate(leave.startDate);
+        const endDate = formatDate(leave.endDate);
+        const isOneDay = startDate === endDate;
+        
+        return {
+          id: leave._id,
+          title: leave.title,
+          date: leave.startDate,
+          endDate: leave.endDate,
+          startDate: leave.startDate,
+          content: `${leave.description} ${
+            isOneDay 
+              ? `on ${startDate}` 
+              : `from ${startDate} to ${endDate}`
+          } (${leave.department}, ${leave.jobPosition})`,
+          type: "restrictLeave",
+          icon: <Block />,
+          color: "#F44336",
+          bgColor: "#FFEBEE",
+        };
+      });
 
       // Combine all announcements and sort by date (most recent first)
       const allAnnouncements = [
@@ -1105,19 +1122,24 @@ const MainDashboard = () => {
                               ? "Recurring Holiday"
                               : announcement.type === "companyHoliday"
                               ? "Weekly Holiday"
-                              : "Restricted Leave"}{" "}
+                              : "Holiday"}{" "}
                             •
-                            {announcement.date
-                              ? ` ${new Date(
-                                  announcement.date
-                                ).toLocaleDateString()}`
-                              : ""}
-                            {announcement.endDate &&
-                            announcement.type === "restrictLeave"
-                              ? ` to ${new Date(
-                                  announcement.endDate
-                                ).toLocaleDateString()}`
-                              : ""}
+                            {(() => {
+                              const startDate = announcement.date || announcement.startDate;
+                              const endDate = announcement.endDate;
+                              
+                              if (!startDate) return "";
+                              
+                              const start = formatDate(startDate);
+                              const end = endDate ? formatDate(endDate) : null;
+                              
+                              // If same day or no end date, show single date
+                              if (!end || start === end) {
+                                return ` ${start}`;
+                              }
+                              // If different days, show range
+                              return ` ${start} to ${end}`;
+                            })()}
                           </Typography>
                         </React.Fragment>
                       }
@@ -1298,7 +1320,7 @@ const MainDashboard = () => {
                     {userLeaveData.leaveBalance ? (
                       <Grid container spacing={2}>
                         {Object.entries(userLeaveData.leaveBalance)
-                          .slice(0, 3)
+                          .filter(([type]) => type === 'casual' || type === 'sick')
                           .map(([type, balance]) => {
                             const total = balance.total || 0;
                             const used = balance.used || 0;

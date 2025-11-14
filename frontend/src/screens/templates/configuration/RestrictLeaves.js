@@ -27,6 +27,8 @@ import {
   CircularProgress,
   Snackbar,
   InputAdornment,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -47,6 +49,7 @@ function RestrictLeaves() {
     department: "",
     jobPosition: "",
     description: "",
+    isOneDay: false,
   });
   const [validationErrors, setValidationErrors] = useState({
     title: "",

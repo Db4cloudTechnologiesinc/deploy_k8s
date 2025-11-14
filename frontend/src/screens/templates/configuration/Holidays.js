@@ -29,6 +29,8 @@ import {
   Alert,
   CircularProgress,
   Snackbar,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import {
   Add,
@@ -637,17 +639,21 @@ export default function Holidays() {
           <DialogContent sx={{ padding: isMobile ? "20px" : "32px" }}>
             <Formik
               initialValues={
-                editingHoliday || {
+                editingHoliday ? {
+                  ...editingHoliday,
+                  isOneDay: editingHoliday.startDate === editingHoliday.endDate
+                } : {
                   name: "",
                   startDate: "",
                   endDate: "",
                   recurring: false,
+                  isOneDay: false,
                 }
               }
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
             >
-              {({ isSubmitting }) => (
+              {({ isSubmitting, values, setFieldValue }) => (
                 <Form>
                   <Stack spacing={3} sx={{ mt: 2 }}>
                     <Field name="name">
@@ -680,6 +686,13 @@ export default function Holidays() {
                             InputLabelProps={{ shrink: true }}
                             error={meta.touched && meta.error}
                             helperText={meta.touched && meta.error}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              // If one day is checked, auto-update end date
+                              if (values.isOneDay) {
+                                setFieldValue('endDate', e.target.value);
+                              }
+                            }}
                             sx={{
                               "& .MuiOutlinedInput-root": {
                                 borderRadius: "8px",
@@ -687,6 +700,27 @@ export default function Holidays() {
                             }}
                           />
                         </Box>
+                      )}
+                    </Field>
+
+                    <Field name="isOneDay">
+                      {({ field }) => (
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              {...field}
+                              checked={field.value || false}
+                              onChange={(e) => {
+                                field.onChange(e);
+                                // Auto-set end date to match start date when checked
+                                if (e.target.checked && values.startDate) {
+                                  setFieldValue('endDate', values.startDate);
+                                }
+                              }}
+                            />
+                          }
+                          label="One Day Holiday"
+                        />
                       )}
                     </Field>
 
@@ -701,6 +735,7 @@ export default function Holidays() {
                             InputLabelProps={{ shrink: true }}
                             error={meta.touched && meta.error}
                             helperText={meta.touched && meta.error}
+                            disabled={values.isOneDay}
                             sx={{
                               "& .MuiOutlinedInput-root": {
                                 borderRadius: "8px",

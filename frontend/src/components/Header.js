@@ -135,7 +135,19 @@ const Header = () => {
     };
 
     fetchUserProfile();
-  }, []);
+    
+    // Set up auto-refresh for profile data (avatar) every 30 seconds
+    const profileRefreshInterval = setInterval(() => {
+      if (isLoggedIn && userId && token) {
+        fetchUserProfile();
+      }
+    }, 30000); // 30 seconds
+    
+    // Cleanup interval on unmount
+    return () => {
+      clearInterval(profileRefreshInterval);
+    };
+  }, [isLoggedIn]);
 
   // Get profile image URL
   const getProfileImageUrl = () => {

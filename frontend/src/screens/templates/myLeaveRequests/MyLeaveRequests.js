@@ -75,23 +75,13 @@ import { io } from "socket.io-client";
 import { useNotifications } from "../../../context/NotificationContext";
 
 const LEAVE_TYPES = [
-  { value: "annual", label: "Annual Leave" },
-  { value: "sick", label: "Sick Leave" },
-  { value: "personal", label: "Personal Leave" },
-  { value: "maternity", label: "Maternity Leave" },
-  { value: "paternity", label: "Paternity Leave" },
   { value: "casual", label: "Casual Leave" },
-  { value: "earned", label: "Earned Leave" },
+  { value: "sick", label: "Sick Leave" }
 ];
 
 const COLORS = [
   "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#8884D8",
-  "#82ca9d",
-  "#ffc658",
+  "#00C49F"
 ];
 
 const API_URL = "/leave-requests";
